@@ -1,7 +1,7 @@
 use crate::constants::*;
 use crate::errors::TokenizeError;
 
-#[derive(Debug)]
+#[derive(PartialEq, Debug)]
 pub enum Token {
     Literal(LiteralKind),
     Identifier(StrPtr),
@@ -10,7 +10,7 @@ pub enum Token {
     Bracket(StrPtr),
 }
 
-#[derive(Debug)]
+#[derive(PartialEq, Debug)]
 pub enum LiteralKind {
     Integer(i64),
     Float(f64),
@@ -128,7 +128,7 @@ pub fn tokenise(expr: &str) -> Result<Vec<Token>, TokenizeError> {
     let mut in_char = false;
 
     for i in expr.chars() {
-        if i.is_whitespace() {
+        if i.is_whitespace() && !(in_str || in_char) {
             if let Ok(i) = Token::try_from(buffer.as_str()) {
                 tokens.push(i);
                 buffer.clear();
@@ -152,7 +152,7 @@ pub fn tokenise(expr: &str) -> Result<Vec<Token>, TokenizeError> {
 
         buffer.push(i);
 
-        if let Err(_) = Token::try_from(buffer.as_str()) {
+        if Token::try_from(buffer.as_str()).is_err() {
             if (in_str || in_char) && !is_already_valid {
                 continue;
             }

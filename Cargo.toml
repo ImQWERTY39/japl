@@ -2,5 +2,5 @@
 name = "japl"
 version = "0.0.2"
 edition = "2021"
-
-[dependencies]
+authors = ["ImQWERTY39"]
+description = "Just Another Programming Language"
