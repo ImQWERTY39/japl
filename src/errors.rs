@@ -1,9 +1,11 @@
 use crate::constants::StrPtr;
 
+#[allow(clippy::enum_variant_names)]
 #[derive(Debug)]
 pub enum TokenizeError {
     InvalidToken(StrPtr),
     InvalidLiteral(StrPtr),
+    InvalidKeyword(StrPtr),
 }
 
 impl std::fmt::Display for TokenizeError {
@@ -11,6 +13,7 @@ impl std::fmt::Display for TokenizeError {
         match self {
             TokenizeError::InvalidToken(i) => write!(f, "Invalid token: {i}"),
             TokenizeError::InvalidLiteral(i) => write!(f, "Invalid literal: {i}"),
+            TokenizeError::InvalidKeyword(i) => write!(f, "Invalid keyword: {i}"),
         }
     }
 }

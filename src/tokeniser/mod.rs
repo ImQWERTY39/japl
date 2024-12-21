@@ -1,21 +1,25 @@
 use crate::constants::*;
 use crate::errors::TokenizeError;
 
+mod literal_kind;
+use literal_kind::LiteralKind;
+
+mod keywords;
+use keywords::Keywords;
+
+mod operators;
+use operators::Operators;
+
+mod brackets;
+use brackets::Brackets;
+
 #[derive(PartialEq, Debug)]
 pub enum Token {
     Literal(LiteralKind),
     Identifier(StrPtr),
-    Keyword(StrPtr),
-    Operator(StrPtr),
-    Bracket(StrPtr),
-}
-
-#[derive(PartialEq, Debug)]
-pub enum LiteralKind {
-    Integer(i64),
-    Float(f64),
-    Character(char),
-    String(StrPtr),
+    Keyword(Keywords),
+    Operator(Operators),
+    Bracket(Brackets),
 }
 
 impl TryFrom<&str> for Token {
@@ -26,16 +30,16 @@ impl TryFrom<&str> for Token {
             return Ok(Token::Literal(i));
         }
 
-        if KEYWORDS.contains(&value) {
-            return Ok(Token::Keyword(value.into()));
+        if let Ok(i) = Keywords::try_from(value) {
+            return Ok(Token::Keyword(i));
         }
 
-        if OPERATORS.contains(&value) {
-            return Ok(Token::Operator(value.into()));
+        if let Ok(i) = Operators::try_from(value) {
+            return Ok(Token::Operator(i));
         }
 
-        if BRACKETS.contains(&value) {
-            return Ok(Token::Bracket(value.into()));
+        if let Ok(i) = Brackets::try_from(value) {
+            return Ok(Token::Bracket(i));
         }
 
         if valid_identifier(value) {
@@ -43,44 +47,6 @@ impl TryFrom<&str> for Token {
         }
 
         Err(TokenizeError::InvalidToken(value.into()))
-    }
-}
-
-impl TryFrom<&str> for LiteralKind {
-    type Error = TokenizeError;
-
-    fn try_from(value: &str) -> Result<Self, Self::Error> {
-        if let Ok(i) = value.parse::<i64>() {
-            return Ok(LiteralKind::Integer(i));
-        }
-
-        if let Ok(i) = value.parse::<f64>() {
-            return Ok(LiteralKind::Float(i));
-        }
-
-        if value.starts_with('\'') && value.ends_with('\'') && value.len() == 3 {
-            return Ok(LiteralKind::Character(
-                value
-                    .chars()
-                    .nth(1)
-                    .expect("Length has to be atleast 3, so index 1 exists"),
-            ));
-        }
-
-        if value.starts_with("\'\\") && value.ends_with('\'') && value.len() == 4 {
-            return Ok(LiteralKind::Character(as_escaped(
-                value
-                    .chars()
-                    .nth(2)
-                    .expect("Length is 4, so index 2 exists"),
-            )?));
-        }
-
-        if value.starts_with('"') && value.ends_with('"') && value.len() > 2 {
-            return Ok(LiteralKind::String(value[1..value.len() - 1].into()));
-        }
-
-        Err(TokenizeError::InvalidLiteral(value.into()))
     }
 }
 
@@ -102,22 +68,6 @@ fn valid_identifier(token: &str) -> bool {
     }
 
     true
-}
-
-fn as_escaped(escape_char: char) -> Result<char, TokenizeError> {
-    match escape_char {
-        'n' => Ok('\n'),
-        't' => Ok('\t'),
-        'r' => Ok('\r'),
-        '0' => Ok('\0'),
-        error_chr => {
-            let mut invalid_token = String::from("\\");
-            invalid_token.push(error_chr);
-            Err(TokenizeError::InvalidLiteral(
-                invalid_token.into_boxed_str(),
-            ))
-        }
-    }
 }
 
 pub fn tokenise(expr: &str) -> Result<Vec<Token>, TokenizeError> {
@@ -176,7 +126,7 @@ pub fn tokenise(expr: &str) -> Result<Vec<Token>, TokenizeError> {
                 .is_some_and(|x| matches!(x, Token::Operator(_)))
             {
                 buffer.clear();
-                tokens.push(Token::Operator("-".into()));
+                tokens.push(Token::Operator(Operators::Sub));
             }
         }
     }
