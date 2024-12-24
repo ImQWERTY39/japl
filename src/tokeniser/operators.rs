@@ -35,6 +35,7 @@ pub enum Operators {
     Dot,
     End,
     Arrow,
+    Comma,
 }
 
 impl TryFrom<&str> for Operators {
@@ -68,6 +69,7 @@ impl TryFrom<&str> for Operators {
             "." => Ok(Operators::Dot),
             ";" => Ok(Operators::End),
             "->" => Ok(Operators::Arrow),
+            "," => Ok(Operators::Comma),
             other => Err(TokenizeError::InvalidToken(other.into())),
         }
     }

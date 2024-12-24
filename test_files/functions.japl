@@ -1,0 +1,5 @@
+fn main() {}
+
+fn () {}
+
+fn add(i32 a, i32 b) {}

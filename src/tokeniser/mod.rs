@@ -2,16 +2,16 @@ use crate::constants::*;
 use crate::errors::TokenizeError;
 
 mod literal_kind;
-use literal_kind::LiteralKind;
+pub use literal_kind::LiteralKind;
 
 mod keywords;
-use keywords::Keywords;
+pub use keywords::Keywords;
 
 mod operators;
-use operators::Operators;
+pub use operators::Operators;
 
 mod brackets;
-use brackets::Brackets;
+pub use brackets::Brackets;
 
 #[derive(PartialEq, Debug)]
 pub enum Token {
