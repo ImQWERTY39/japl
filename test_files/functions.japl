@@ -1,5 +1,10 @@
-fn main() {}
+fn main() {
+    print("Hello world");
+}
 
 fn () {}
 
-fn add(i32 a, i32 b) {}
+fn add(i32 a, i32 b) {
+    i32 c = a + b;
+    print("Sum = {}", c);
+}

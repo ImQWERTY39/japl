@@ -64,3 +64,24 @@ impl TryFrom<&str> for Keywords {
         }
     }
 }
+
+impl Keywords {
+    pub fn is_keyword(&self) -> bool {
+        match self {
+            Keywords::Const => true,
+            Keywords::I8 => true,
+            Keywords::I16 => true,
+            Keywords::I32 => true,
+            Keywords::I64 => true,
+            Keywords::I128 => true,
+            Keywords::U8 => true,
+            Keywords::U16 => true,
+            Keywords::U32 => true,
+            Keywords::U64 => true,
+            Keywords::U128 => true,
+            Keywords::Character => true,
+            Keywords::Boolean => true,
+            _ => false,
+        }
+    }
+}
