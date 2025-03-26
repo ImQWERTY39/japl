@@ -14,10 +14,7 @@ fn main() {
     let program = std::fs::read_to_string(file).unwrap();
 
     let tokens = match lexer::tokenise(program.trim()) {
-        Ok(i) => {
-            // println!("{:#?}", i);
-            i
-        }
+        Ok(i) => i,
         Err(i) => {
             eprintln!("Error: {:?}", i);
             return;

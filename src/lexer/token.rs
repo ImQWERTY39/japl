@@ -43,7 +43,7 @@ fn valid_identifier(value: &str) -> bool {
     }
 
     let mut char_iter = value.chars();
-    let first = char_iter.next().unwrap();
+    let first = char_iter.next().expect("`value` cannot be empty");
 
     (first.is_ascii_alphabetic() || first == '_')
         && char_iter.all(|c| c.is_alphanumeric() || c == '_')

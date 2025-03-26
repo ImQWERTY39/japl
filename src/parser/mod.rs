@@ -139,9 +139,9 @@ pub fn parse(tokens: Vec<Token>) -> Result<(Vec<Instruction>, HashMap<Str, usize
                     let value = Value::try_from(
                         token_iter
                             .next()
-                            .ok_or(JAPLError::IncorrectArgument("Missing token: Value".into()))?,
+                            .ok_or(JAPLError::InvalidArgument("Missing token: Value".into()))?,
                     )
-                    .map_err(|_| JAPLError::IncorrectArgument("Expected token: Value".into()))?;
+                    .map_err(|_| JAPLError::InvalidArgument("Expected token: Value".into()))?;
 
                     instruction_set.push(Instruction::Set(var_name, value));
                 }
@@ -150,9 +150,9 @@ pub fn parse(tokens: Vec<Token>) -> Result<(Vec<Instruction>, HashMap<Str, usize
                     let value = Value::try_from(
                         token_iter
                             .next()
-                            .ok_or(JAPLError::IncorrectArgument("Missing token: Value".into()))?,
+                            .ok_or(JAPLError::InvalidArgument("Missing token: Value".into()))?,
                     )
-                    .map_err(|_| JAPLError::IncorrectArgument("Expected token: Value".into()))?;
+                    .map_err(|_| JAPLError::InvalidArgument("Expected token: Value".into()))?;
                     let reg = convert::get_register_name(token_iter.next())?;
 
                     instruction_set.push(Instruction::Load(value, reg));
