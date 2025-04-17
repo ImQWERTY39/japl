@@ -15,7 +15,7 @@ pub enum Instruction {
     Move(RegisterName, RegisterName),
 
     Call(Str),
-    CallIf(Str),
+    CallIf(Str, RegisterName),
     Jump(Str),
     JumpIf(Str, RegisterName),
 

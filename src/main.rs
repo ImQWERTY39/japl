@@ -5,8 +5,6 @@ mod parser;
 mod runtime;
 
 fn main() {
-    std::env::set_var("RUST_BACKTRACE", "1");
-
     let mut args = std::env::args();
     args.next();
 

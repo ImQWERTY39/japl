@@ -60,7 +60,7 @@ fn execute(
         }
         Instruction::Move(_, _) => todo!(),
         Instruction::Call(_) => todo!(),
-        Instruction::CallIf(_) => todo!(),
+        Instruction::CallIf(_, _) => todo!(),
         Instruction::Jump(label) => *pc = labels[label],
         Instruction::JumpIf(label, reg) => {
             if register.i[reg.index()] {
